@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class GameManager2 : MonoBehaviour
 {
     [SerializeField] private Transform gameTransform;
     [SerializeField] private Transform piecePrefab;
@@ -13,6 +14,7 @@ public class GameManager : MonoBehaviour
     private int emptyLocation;
     private int size;
     private bool shuffling = false;
+    private int winny = 0;
 
    
 
@@ -67,7 +69,7 @@ public class GameManager : MonoBehaviour
     {
 
         pieces = new List<Transform>();
-        size = 3;
+        size = 6;
         CreateGamePieces(0.01f);
 
         
@@ -125,15 +127,21 @@ public class GameManager : MonoBehaviour
 
     private bool CheckCompletion()
     {
-        for (int i = 0; i < pieces.Count; i++)
+        if (winny > 1)
         {
-            if (pieces[i].name != $"{i}")
-            {
-                return false;
-            }
+            SceneManager.LoadScene("Win");
         }
-        ScoreManager.instance.AddPoint();
-        return true;
+        
+        
+            for (int i = 0; i < pieces.Count; i++)
+            {
+                if (pieces[i].name != $"{i}")
+                {
+                    return false;
+                }
+            }
+            winny += 1;
+            return true;
         
     }
 
